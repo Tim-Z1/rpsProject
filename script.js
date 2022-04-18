@@ -1,56 +1,58 @@
 function computerPlay() {
     let randomNumber = Math.floor(Math.random()*100);
     if (randomNumber <= 33) {
-        randomNumber = "rock";
+        randomNumber = "Rock";
     } else if (randomNumber <= 66) {
-        randomNumber = "paper";
+        randomNumber = "Paper";
     } else {
-        randomNumber = "scissors";
+        randomNumber = "Scissors";
     }   
     return randomNumber; 
 }
 
-function playRound(playerSelection, computerSelection) { //is the reason for putting parameters in the function a matter of scope? vs defining the variables inside the function?
-    playerSelection = playerSelection.toLowerCase();
-    if (playerSelection == "rock" && computerSelection == "rock") {
-      return "It's a tie. " + playerSelection + " and " + computerSelection;
-  } else if (playerSelection == "paper" && computerSelection == "rock") {
-      return "You win! Paper beats Rock!";
-  } else {
-      return "beep beep meow";
-  }
+function playRound(playerSelection, computerSelection) {
+    let lose = "You Lose! " + computerSelection + " beats " + playerSelection;
+    let win = "You Win! " + playerSelection + " beats " + computerSelection;
+    let tie = "It's a tie!";
+
+    if (playerSelection == "Rock" && computerSelection == "Paper" || 
+    playerSelection == "Paper" && computerSelection == "Scissors" ||
+    playerSelection == "Scissors" && computerSelection == "Rock") {
+        return lose;
+
+    } else if (playerSelection == "Rock" && computerSelection == "Scissors" || 
+    playerSelection == "Paper" && computerSelection == "Rock" ||
+    playerSelection == "Scissors" && computerSelection == "Paper") {
+        return win;
+
+    } else if (playerSelection == "Rock" && computerSelection == "Rock" || 
+    playerSelection == "Paper" && computerSelection == "Paper" ||
+    playerSelection == "Scissors" && computerSelection == "Scissors") {
+        return tie;  
+
+    } else {
+        return "meow, something went wrong";
+    }
 }
 
-const playerSelection = prompt ("Please type something here", "Type in Rock, Paper or Scissors here");
-const computerSelection = computerPlay();
 
 
-console.log(playRound(playerSelection, computerSelection));
+// const playerSelection = prompt ("Type here");
+// const computerSelection = computerPlay();
+// console.log(playRound(playerSelection, computerSelection));
+
 
 function game() {
     for (let i = 0; i < 5; i++) {
-        console.log ("wow");
-        console.log ('hmm');
+        const playerSelection = prompt ("Type here");
+        const computerSelection = computerPlay();
+        console.log (playRound(playerSelection,computerSelection));
     }
 }
 
 game();
-// _____________________________________________________________
-// function favoriteAnimal(animal) {
-//     console.log(animal + " is my favorite animal!")
-//   }
-  
-//   favoriteAnimal('Goat')
-// _____________________________________________________________
 
-
-// -play a game of rock, paper, scissors with the computer
-
-// -player inputs "Rock, paper or scissors"
-// -code takes that input and stores it in a variable
-
-// -code generates a random number and determines rock,paper,scissors depending on
-// the random number outcome then stores that outcome as the computer's variable
-
-// -code compares that variable against computer's variable to determine outcome
-// -code displays different messages depending on outcome 
+//get playerSelection to prompt user for an input: rock, paper or scissors
+//          -how do I make prompt case insensitive?
+// how do I loop playRound() 5 times inside of game()? 
+// how do I track the results of playRound() inside of game() to show overall winner? 
