@@ -1,8 +1,9 @@
-function getComputerChoice(number) {
+function getComputerChoice() {
+  number = Math.floor(Math.random() * 100) + 1;
     if (number <= 33) {
-      return 'Rock';
+        return 'Rock';
     } else if (number <= 66) {
-      return 'Paper'; 
+        return 'Paper'; 
     } else {
         return 'Scissors';
     }
@@ -18,29 +19,73 @@ function capitalize(string) {
   return str2 + str1;
 }
 
-function playRound(playerSelection, computerSelection) {
+const result = document.querySelector('.result');
 
+function playRound(playerSelection, computerSelection) {
   if (playerSelection == 'Rock' && computerSelection == 'Rock' || 
       playerSelection == 'Paper' && computerSelection == 'Paper' ||
       playerSelection == 'Scissors' && computerSelection == 'Scissors') {
-    return n = 1; //"It's a tie!";
+        result.textContent = `It's a tie`;
+        return n = 1; //"It's a tie!";
   } else if (playerSelection == 'Rock' && computerSelection == 'Paper' ||
              playerSelection == 'Paper' && computerSelection == 'Scissors' ||
              playerSelection == 'Scissors' && computerSelection == 'Rock') { 
-    return n = 2; //`You Lose! ${computerSelection} beats ${playerSelection}.`;
+              result.textContent = `You Lose! ${computerSelection} beats ${playerSelection}.`;
+              return n = 2; //`You Lose! ${computerSelection} beats ${playerSelection}.`;
     } else {
+      result.textContent = `You Win! ${playerSelection} beats ${computerSelection}.`;
       return n = 3; //`You Win! ${playerSelection} beats ${computerSelection}.`;
     }
-  }
+}
+
+const midgame = document.querySelector('.midgame');
+const startBtn = document.querySelector('#start');
+startBtn.addEventListener('click', () => {
+  startBtn.style.visibility = "hidden";
+  midgame.style.visibility = "visible";
+});
 
 
+//could probably optimise code using querySelectorAll?
 const btn = document.querySelector('#btn');
-    
-btn.addEventListener('click', function(e){
-  console.log(e.target);
-}); 
- 
-  
+const btn2 = document.querySelector('#btn2');
+const btn3 = document.querySelector('#btn3');
+const score = document.querySelector('.score');
+//score text content changing according to increment/decrement of player and computer's score
+
+function game(){
+  let playerScore = 0;
+  let computerScore = 0;
+
+  btn.addEventListener('click', () => {
+    let pS = 'Scissors';
+    playRound( pS, getComputerChoice() );
+  }); 
+  btn2.addEventListener('click', () => {
+    let pS = 'Paper';
+    playRound( pS, getComputerChoice() );
+  }); 
+  btn3.addEventListener('click', () => {
+    let pS = 'Rock';
+    playRound( pS, getComputerChoice() );
+  }); 
+
+  if (n == 2) {
+    computerScore++;
+  } else if (n == 3) {
+    playerScore++;
+  } else {
+    console.log ('something went wrong');
+  }  
+}
+/*
+1. press start to play 
+2. click buttons -> display result of that 1 round -> track result of that 1 round, increase/decrease score
+3. when score reaches 5 announce winner of the game -> game ends: have a button allowing you to play again
+*/
+
+
+
 /*
 function game() {
   let playerScore = 0;
@@ -54,9 +99,9 @@ function game() {
 
     playRound(playerSelection, computerSelection);
 
-    if (n == 1){
+    if (n == 1) {
       console.log ("It's a tie");
-    } else if (n == 2){
+    } else if (n == 2) {
       console.log (`You Lose! ${computerSelection} beats ${playerSelection}.`);
       computerScore++;
     } else if (n == 3) {
