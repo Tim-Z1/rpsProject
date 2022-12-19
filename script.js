@@ -1,3 +1,20 @@
+const btn = document.querySelector('#btn');
+const btn2 = document.querySelector('#btn2');
+const btn3 = document.querySelector('#btn3');
+const score = document.querySelector('.score');
+const midgame = document.querySelector('.midgame');
+const startBtn = document.querySelector('#start');
+const result = document.querySelector('.result');
+const p = document.querySelector('.p');
+const buttonGroup = document.querySelector('.button');
+const restart = document.querySelector('#restart');
+
+startBtn.addEventListener('click', () => {
+  startBtn.style.visibility = "hidden";
+  midgame.style.visibility = "visible";
+  game();
+});
+
 function getComputerChoice() {
   number = Math.floor(Math.random() * 100) + 1;
     if (number <= 33) {
@@ -9,118 +26,80 @@ function getComputerChoice() {
     }
 }
 
-function capitalize(string) {
-  let str1 = string.toLowerCase(); //makes all input lowercase
-  str1 = str1.substr(1);
-
-  let str2 = string.substr(0,1); //takes first letter of input 
-  str2 = str2.toUpperCase();
-
-  return str2 + str1;
-}
-
-const result = document.querySelector('.result');
-
 function playRound(playerSelection, computerSelection) {
+  //computerSelection = getComputerChoice();
   if (playerSelection == 'Rock' && computerSelection == 'Rock' || 
       playerSelection == 'Paper' && computerSelection == 'Paper' ||
       playerSelection == 'Scissors' && computerSelection == 'Scissors') {
-        result.textContent = `It's a tie`;
-        return n = 1; //"It's a tie!";
+        result.textContent = `It's a tie!`;
+        return outcome = 'tie'; 
   } else if (playerSelection == 'Rock' && computerSelection == 'Paper' ||
              playerSelection == 'Paper' && computerSelection == 'Scissors' ||
              playerSelection == 'Scissors' && computerSelection == 'Rock') { 
               result.textContent = `You Lose! ${computerSelection} beats ${playerSelection}.`;
-              return n = 2; //`You Lose! ${computerSelection} beats ${playerSelection}.`;
+              return outcome = 'lose'; 
     } else {
       result.textContent = `You Win! ${playerSelection} beats ${computerSelection}.`;
-      return n = 3; //`You Win! ${playerSelection} beats ${computerSelection}.`;
+      return outcome = 'win'; 
     }
 }
 
-const midgame = document.querySelector('.midgame');
-const startBtn = document.querySelector('#start');
-startBtn.addEventListener('click', () => {
-  startBtn.style.visibility = "hidden";
-  midgame.style.visibility = "visible";
-});
-
-
-//could probably optimise code using querySelectorAll?
-const btn = document.querySelector('#btn');
-const btn2 = document.querySelector('#btn2');
-const btn3 = document.querySelector('#btn3');
-const score = document.querySelector('.score');
-//score text content changing according to increment/decrement of player and computer's score
-
-function game(){
+function game() {
   let playerScore = 0;
   let computerScore = 0;
+  score.textContent = `player: ${playerScore} computer: ${computerScore}`;
+
+  function updateScore (a) {
+    if (a == 'lose') {
+      computerScore++;
+    } else if (a == 'win') {
+      playerScore++;
+    } else if (a == 'tie') {
+      return;
+    } else {
+      console.log('did something go wrong?');
+    }
+    score.textContent = `player: ${playerScore} computer: ${computerScore}`;
+  }
 
   btn.addEventListener('click', () => {
-    let pS = 'Scissors';
-    playRound( pS, getComputerChoice() );
+    pS = 'Scissors';
+    playRound(pS, getComputerChoice());
+    updateScore(outcome);
+    gameOver();
   }); 
   btn2.addEventListener('click', () => {
     let pS = 'Paper';
     playRound( pS, getComputerChoice() );
+    updateScore(outcome);
+    gameOver();
   }); 
   btn3.addEventListener('click', () => {
     let pS = 'Rock';
     playRound( pS, getComputerChoice() );
+    updateScore(outcome);
+    gameOver();
   }); 
 
-  if (n == 2) {
-    computerScore++;
-  } else if (n == 3) {
-    playerScore++;
-  } else {
-    console.log ('something went wrong');
-  }  
+  function gameOver () {
+    if (playerScore == 5) {
+    p.textContent = 'Congratulations you win!'
+    buttonGroup.style.visibility = "hidden";
+    restart.style.visibility = "visible";
+  } else if (computerScore == 5) {
+    p.textContent = 'Computer wins! Better luck next time!'
+    buttonGroup.style.visibility = "hidden";
+    restart.style.visibility = "visible";
+  }
+  }
+
+  restart.addEventListener ('click', () => {
+    p.textContent = 'Choose an option below. First to 5 wins!';
+    buttonGroup.style.visibility = "visible";
+    restart.style.visibility = "hidden";
+    playerScore = 0;
+    computerScore = 0;
+    score.textContent = `player: ${playerScore} computer: ${computerScore}`;
+    result.textContent = ``;
+});
 }
-/*
-1. press start to play 
-2. click buttons -> display result of that 1 round -> track result of that 1 round, increase/decrease score
-3. when score reaches 5 announce winner of the game -> game ends: have a button allowing you to play again
-*/
-
-
-
-/*
-function game() {
-  let playerScore = 0;
-  let computerScore = 0;
-
-  for (let i = 0; i < 5; i++) {
-    const randomNumber = Math.floor(Math.random() * 100) + 1;
-    const computerSelection = getComputerChoice(randomNumber);
-    const input = prompt('Choose one: Scissors, Paper, Rock');
-    const playerSelection = capitalize(input); 
-
-    playRound(playerSelection, computerSelection);
-
-    if (n == 1) {
-      console.log ("It's a tie");
-    } else if (n == 2) {
-      console.log (`You Lose! ${computerSelection} beats ${playerSelection}.`);
-      computerScore++;
-    } else if (n == 3) {
-      console.log(`You Win! ${playerSelection} beats ${computerSelection}.`);
-      playerScore++;
-    } else {
-      console.log ('something went wrong');
-    }
-  }
-
-  if (i = 5 && playerScore > computerScore) {
-    console.log (`Congratulations! You've won the match! Your score is: ${playerScore}, Computer's score is: ${computerScore}`);
-  } else if (i = 5 && computerScore > playerScore) {
-    console.log (`Better luck next time! The computer wins the match. Your score is: ${playerScore}, Computer's score is : ${computerScore}`);
-  } else if (i = 5 && playerScore == computerScore) {
-    console.log (`The match ends in a draw! Your score is: ${playerScore}, Computer's score is: ${computerScore}`);
-  } else {
-    console.log ('did something go wrong?');
-  }
-} 
-
-*/

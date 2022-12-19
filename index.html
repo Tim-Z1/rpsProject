@@ -18,6 +18,8 @@ body {
   }
 
 .midgame {visibility:hidden;}
+
+#restart {visibility:hidden;}
 </style>
 
 <body>
@@ -27,14 +29,17 @@ body {
     <button id="start">Start Game</button>
 
     <div class="midgame">
-      <p>Select your choice below</p>
-      <button id='btn'>Scissors</button>
-      <button id='btn2'>Paper</button>
-      <button id='btn3'>Rock</button>
-
+      <p class ='p'>Choose an option below. First to 5 wins!</p>
+      <div class = 'button'>
+        <button id='btn'>Scissors</button>
+        <button id='btn2'>Paper</button>
+        <button id='btn3'>Rock</button>
+      </div>
       <div class="result"></div>
       <div class="score"></div>
    </div>
+
+   <button id ='restart'>Play Again</button>
 
   </div>
 </body>
